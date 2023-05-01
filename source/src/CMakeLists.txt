@@ -1,0 +1,8 @@
+
+
+include_directories(${DevRTOS_SOURCE_DIR}/source/inc)
+# I assume you want to use LibProject as a library in MainProject.
+link_directories(${DevRTOS_SOURCE_DIR}/source/src)
+add_library(LibProject queue.c task.c)
+add_executable(DevRTOS ${DevRTOS_SOURCE_DIR}/main.c)
+target_link_libraries(DevRTOS LibProject)

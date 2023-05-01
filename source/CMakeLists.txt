@@ -1,2 +1,2 @@
-#new project
+add_subdirectory(src)
 
