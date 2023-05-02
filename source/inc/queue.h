@@ -3,7 +3,7 @@
 #define QUEUE_H
 
 #include<stdint.h>
-
+#include"DevRTOSConfig.h"
 //q: queue data structure
 //q->head: pointer to the head of the queue
 //q->tail: pointer to the tail of the queue
@@ -24,6 +24,6 @@ queue_t* q_create(uint32_t qsize, uint32_t data_size);
 int q_delete(queue_t* queue);
 int q_enqueue(queue_t* queue, void* data);
 int q_dequeue(queue_t* queue, void* data);
-int q_size(queue_t* queue);
+
 
 #endif

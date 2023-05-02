@@ -2,55 +2,16 @@
 #include<stdint.h>
 #include<stdlib.h>
 
-#include "queue.h"
 #include "task.h"
-// struct test_struct
-// {
-//     uint32_t x;
-//     uint32_t y;
-//     uint32_t z;
-// };
 
-//q: function to test queue
-// void testQueue()
-// {
-//     queue_t* queue = q_create(5, sizeof(struct test_struct));
-
-//     struct test_struct* x = (struct test_struct*)malloc(sizeof(struct test_struct));
-//     struct test_struct* y = (struct test_struct*)malloc(sizeof(struct test_struct));
-//     struct test_struct* z = (struct test_struct*)malloc(sizeof(struct test_struct));
-//     struct test_struct* a = (struct test_struct*)malloc(sizeof(struct test_struct));
-//     struct test_struct* b = (struct test_struct*)malloc(sizeof(struct test_struct));
-//     struct test_struct* c = (struct test_struct*)malloc(sizeof(struct test_struct));
-//     x->x = 1;
-//     y->x = 2;
-//     z->x = 3;
-//     a->x = 4;
-//     b->x = 5;
-//     c->x = 6;
-//     q_enqueue(queue, x);
-//     q_enqueue(queue, y);
-//     q_enqueue(queue, z);
-//     q_enqueue(queue, a);
-//     q_enqueue(queue, b);
-//     q_enqueue(queue, c);
-//     printf("%d\n", q_size(queue));
-//     struct test_struct* data = (struct test_struct*)malloc(sizeof(struct test_struct));
-//     q_dequeue(queue, data);
-//     printf("%d\n", data->x);
-//     q_dequeue(queue, data);
-//     printf("%d\n", data->x);
-//     q_dequeue(queue, data);
-//     printf("%d\n", data->x);
-//     q_dequeue(queue, data);
-//     printf("%d\n", data->x);
-//     q_dequeue(queue, data);
-//     printf("%d\n", data->x);
-
-//     q_delete(queue);
-//     free(data);
-// }
-
+/* printf() output uses the UART.  These constants define the addresses of the
+required UART registers. */
+#define UART0_ADDRESS 	( 0x40004000UL )
+#define UART0_DATA		( * ( ( ( volatile uint32_t * )( UART0_ADDRESS + 0UL ) ) ) )
+#define UART0_STATE		( * ( ( ( volatile uint32_t * )( UART0_ADDRESS + 4UL ) ) ) )
+#define UART0_CTRL		( * ( ( ( volatile uint32_t * )( UART0_ADDRESS + 8UL ) ) ) )
+#define UART0_BAUDDIV	( * ( ( ( volatile uint32_t * )( UART0_ADDRESS + 16UL ) ) ) )
+#define TX_BUFFER_MASK	( 1UL )
 
 tcb_t* task1;
 
@@ -59,20 +20,35 @@ void task1_function()
     printf("Task 1\n");
 }
 
+tcb_t* task2;
+
+//create task2
+void task2_function()
+{
+    printf("Task 2\n");
+}
+
+//create task3
+tcb_t* task3;
+void task3_function()
+{
+    printf("Task 3\n");
+}
+
+//create task4
+tcb_t* task4;
+void task4_function()
+{
+    printf("Task 4\n");
+}
+
 void testQueue()
 {
     printf("Test Queue\n");
-    queue_t* queue = q_create(5, sizeof(tcb_t*));
-    task1 = (tcb_t*)malloc(sizeof(tcb_t));
-    printf("create task\n");
-    createTask(task1, &task1_function, NULL, 100, 1);
-    
-    q_enqueue(queue, &task1);
-    tcb_t* data =(tcb_t*)malloc(sizeof(tcb_t));
-    q_dequeue(queue, &data);
-    printf("%d\n", data->taskPriority);
-    q_delete(queue);
-    free(data);
+    task1 = createTask( &task1_function, NULL, 100, 1);
+    task2 = createTask( &task2_function, NULL, 100, 2);
+    task3 = createTask( &task3_function, NULL, 100, 3);
+    task4 = createTask( &task4_function, NULL, 100, 4);
 }
 
 //gcc command build this file
@@ -80,6 +56,8 @@ void testQueue()
 //gcc -o queue queue.c -iquote ../inc/
 int main()
 {
+    taskInit();
     testQueue();
+    taskScheduler();
     return 0;
 }

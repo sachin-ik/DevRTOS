@@ -7,6 +7,9 @@
 
 #define MAX_TASKS 10
 
+#include "queue.h"
+#include "DevRTOSConfig.h"
+
 typedef enum
 {
     RUNNING = 0,
@@ -29,6 +32,9 @@ typedef struct tcb
     uint32_t taskFunctionReturnStatus;
 } tcb_t;
 
-void createTask(tcb_t *tcb, void (*taskFunction)(void), uint32_t *stack, uint32_t stackSize, uint32_t taskPriority);
 
+tcb_t* createTask(void (*taskFunction)(void), uint32_t *stack, uint32_t stackSize, uint32_t taskPriority);
+
+void taskScheduler();
+void taskInit();
 #endif
